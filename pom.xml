@@ -30,6 +30,8 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
         <configuration>
+          <!-- this might have to live inside ch2deploy https://help.mulesoft.com/s/article/Error-No-application-with-the-provided-GAV-could-be-retrieved-from-Exchange-when-deploying-an-application-to-Runtime-Fabric-->
+          <classifier>mule-application</classifier>
           <cloudhub2Deployment>
             <uri>https://anypoint.mulesoft.com</uri>
             <provider>MC</provider>
