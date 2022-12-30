@@ -29,6 +29,30 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+        <configuration>
+          <cloudhub2Deployment>
+            <uri>https://anypoint.mulesoft.com</uri>
+            <provider>MC</provider>
+            <environment>Sandbox</environment>
+            <target>afm-ps</target>
+            <muleVersion>4.4.0</muleVersion>
+            <connectedAppClientId>${clientId}</connectedAppClientId>
+            <connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
+            <connectedAppGrantType>client_credentials</connectedAppGrantType>
+            <applicationName>${appName}</applicationName>
+            <replicas>1</replicas>
+            <vCores>0.1</vCores>
+            <deploymentSettings>
+              <http>
+                <inbound>
+                  <publicUrl>${publicURL}</publicUrl>
+                  <forwardSslSession>true</forwardSslSession>
+                  <lastMileSecurity>true</lastMileSecurity>
+                </inbound>
+              </http>
+            </deploymentSettings>
+          </cloudhub2Deployment>
+        </configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -61,9 +85,45 @@
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
+    <repository>	
+			<id>mule-enterprise</id>	
+			<name>Mule Enterprise Repository</name>	
+			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>	
+			<layout>default</layout>	
+			<releases>	
+				<enabled>true</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>true</enabled>	
+			</snapshots>	
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
+  <pluginRepository>	
+			<id>mule-enterprise</id>	
+			<name>Mule Enterprise Repository</name>	
+			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>	
+			<layout>default</layout>	
+			<releases>	
+				<enabled>true</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>true</enabled>	
+			</snapshots>	
+		</pluginRepository>	
+		<pluginRepository>	
+			<id>mule-public</id>	
+			<name>Mule Public Repository</name>	
+			<url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>	
+			<layout>default</layout>	
+			<releases>	
+				<enabled>true</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>true</enabled>	
+			</snapshots>	
+		</pluginRepository>	
 		<pluginRepository>
 			<id>mulesoft-releases</id>
 			<name>MuleSoft Releases Repository</name>
