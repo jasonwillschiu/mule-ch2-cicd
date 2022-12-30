@@ -34,7 +34,8 @@
             <uri>https://anypoint.mulesoft.com</uri>
             <provider>MC</provider>
             <environment>Sandbox</environment>
-            <target>afm-ps</target>
+            <!-- modify target -->
+            <target>Shared Space</target> 
             <muleVersion>4.4.0</muleVersion>
             <connectedAppClientId>${clientId}</connectedAppClientId>
             <connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
