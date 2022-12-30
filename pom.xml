@@ -14,7 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.4.0-20220420</app.runtime>
-		<mule.maven.plugin.version>3.5.4</mule.maven.plugin.version>
+		<mule.maven.plugin.version>3.8.1</mule.maven.plugin.version>
 	</properties>
 
 	<build>
@@ -43,13 +43,14 @@
             <replicas>1</replicas>
             <vCores>0.1</vCores>
             <deploymentSettings>
-              <http>
+              <!-- <http>
                 <inbound>
-                  <!-- <publicUrl>${publicURL}</publicUrl> -->
+                  <publicUrl>${publicURL}</publicUrl>
                   <forwardSslSession>true</forwardSslSession>
                   <lastMileSecurity>true</lastMileSecurity>
                 </inbound>
-              </http>
+              </http> -->
+              <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
             </deploymentSettings>
           </cloudhub2Deployment>
         </configuration>
@@ -135,4 +136,12 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+    <distributionManagement>
+    <repository>
+      <id>Repository</id>
+      <name>Corporate Repository</name>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/98cd913d-de2c-4a27-9641-16ff1d2781c9/maven</url>
+      <layout>default</layout>
+    </repository>
+  </distributionManagement>
 </project>
