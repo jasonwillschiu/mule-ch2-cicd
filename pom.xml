@@ -35,7 +35,7 @@
             <provider>MC</provider>
             <environment>Sandbox</environment>
             <!-- modify target -->
-            <target>Shared Space</target> 
+            <target>Cloudhub-US-East-2</target> 
             <muleVersion>4.4.0</muleVersion>
             <connectedAppClientId>${clientId}</connectedAppClientId>
             <connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
