@@ -134,7 +134,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-    <distributionManagement>
+  <distributionManagement>
     <repository>
       <id>anypoint-exchange-v3</id>
       <name>Exchange Private Repository</name>
