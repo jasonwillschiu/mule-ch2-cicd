@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>com.mycompany</groupId>
+  <!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
+	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
@@ -30,7 +30,7 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
         <configuration>
-          <!-- this might have to live inside ch2deploy https://help.mulesoft.com/s/article/Error-No-application-with-the-provided-GAV-could-be-retrieved-from-Exchange-when-deploying-an-application-to-Runtime-Fabric-->
+          <!-- classifier looks right here-->
           <classifier>mule-application</classifier>
           <cloudhub2Deployment>
             <uri>https://anypoint.mulesoft.com</uri>
@@ -46,13 +46,8 @@
             <replicas>1</replicas>
             <vCores>0.1</vCores>
             <deploymentSettings>
-              <!-- <http>
-                <inbound>
-                  <publicUrl>${publicURL}</publicUrl>
-                  <forwardSslSession>true</forwardSslSession>
-                  <lastMileSecurity>true</lastMileSecurity>
-                </inbound>
-              </http> -->
+              <forwardSslSession>false</forwardSslSession>
+              <lastMileSecurity>false</lastMileSecurity>
               <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
             </deploymentSettings>
           </cloudhub2Deployment>
@@ -141,9 +136,9 @@
 
     <distributionManagement>
     <repository>
-      <id>Repository</id>
-      <name>Corporate Repository</name>
-      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/98cd913d-de2c-4a27-9641-16ff1d2781c9/maven</url>
+      <id>anypoint-exchange-v3</id>
+      <name>Exchange Private Repository</name>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
       <layout>default</layout>
     </repository>
   </distributionManagement>

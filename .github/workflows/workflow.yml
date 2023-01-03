@@ -79,7 +79,21 @@ jobs:
       with:
         name: artifacts
     
-    - name: Deploy to Sandbox
+    - name: Deploy to Exchange
+      env:
+        CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
+        APP_NAME: mule-ch2-cicd
+      run: |
+        artifactName=$(ls *.jar | head -1)
+        mvn clean deploy \
+         -Dmule.artifact=$artifactName \
+         -DclientId="$CLIENT_ID" \
+         -DclientSecret="$CLIENT_SECRET" \
+         -DappName="$APP_NAME" \
+         -DskipTests
+
+    - name: Then deploy to Sandbox
       env:
         CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
