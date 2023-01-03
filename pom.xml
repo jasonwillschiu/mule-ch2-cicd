@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-  <!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
+	<!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
 	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -14,6 +14,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.4.0-20220420</app.runtime>
+    <!-- error with version 3.8.1,
+     trying 3.7.1, error, need 3.8.1 -->
 		<mule.maven.plugin.version>3.8.1</mule.maven.plugin.version>
 	</properties>
 
@@ -29,29 +31,29 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-        <configuration>
-          <!-- classifier looks right here-->
-          <classifier>mule-application</classifier>
-          <cloudhub2Deployment>
-            <uri>https://anypoint.mulesoft.com</uri>
-            <provider>MC</provider>
-            <environment>Sandbox</environment>
-            <!-- modify target -->
-            <target>Cloudhub-US-East-2</target> 
-            <muleVersion>4.4.0</muleVersion>
-            <connectedAppClientId>${clientId}</connectedAppClientId>
-            <connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
-            <connectedAppGrantType>client_credentials</connectedAppGrantType>
-            <applicationName>${appName}</applicationName>
-            <replicas>1</replicas>
-            <vCores>0.1</vCores>
-            <deploymentSettings>
-              <forwardSslSession>false</forwardSslSession>
-              <lastMileSecurity>false</lastMileSecurity>
-              <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
-            </deploymentSettings>
-          </cloudhub2Deployment>
-        </configuration>
+				<configuration>
+					<!-- classifier looks right here-->
+					<classifier>mule-application</classifier>
+					<cloudhub2Deployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<provider>MC</provider>
+						<environment>Sandbox</environment>
+						<!-- modify target -->
+						<target>Cloudhub-US-East-2</target>
+						<muleVersion>4.4.0</muleVersion>
+						<connectedAppClientId>${clientId}</connectedAppClientId>
+						<connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<applicationName>${appName}</applicationName>
+						<replicas>1</replicas>
+						<vCores>0.1</vCores>
+						<deploymentSettings>
+							<forwardSslSession>false</forwardSslSession>
+							<lastMileSecurity>false</lastMileSecurity>
+							<generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+						</deploymentSettings>
+					</cloudhub2Deployment>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -60,13 +62,13 @@
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-http-connector</artifactId>
-			<version>1.6.0</version>
+			<version>1.7.3</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-sockets-connector</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.3</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
@@ -84,45 +86,45 @@
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
-    <repository>	
-			<id>mule-enterprise</id>	
-			<name>Mule Enterprise Repository</name>	
-			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>	
-			<layout>default</layout>	
-			<releases>	
-				<enabled>true</enabled>	
-			</releases>	
-			<snapshots>	
-				<enabled>true</enabled>	
-			</snapshots>	
+		<repository>
+			<id>mule-enterprise</id>
+			<name>Mule Enterprise Repository</name>
+			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
 	<pluginRepositories>
-  <pluginRepository>	
-			<id>mule-enterprise</id>	
-			<name>Mule Enterprise Repository</name>	
-			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>	
-			<layout>default</layout>	
-			<releases>	
-				<enabled>true</enabled>	
-			</releases>	
-			<snapshots>	
-				<enabled>true</enabled>	
-			</snapshots>	
-		</pluginRepository>	
-		<pluginRepository>	
-			<id>mule-public</id>	
-			<name>Mule Public Repository</name>	
-			<url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>	
-			<layout>default</layout>	
-			<releases>	
-				<enabled>true</enabled>	
-			</releases>	
-			<snapshots>	
-				<enabled>true</enabled>	
-			</snapshots>	
-		</pluginRepository>	
+		<pluginRepository>
+			<id>mule-enterprise</id>
+			<name>Mule Enterprise Repository</name>
+			<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>mule-public</id>
+			<name>Mule Public Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
 		<pluginRepository>
 			<id>mulesoft-releases</id>
 			<name>MuleSoft Releases Repository</name>
@@ -134,12 +136,12 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-  <distributionManagement>
-    <repository>
-      <id>anypoint-exchange-v3</id>
-      <name>Exchange Private Repository</name>
-      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
-      <layout>default</layout>
-    </repository>
-  </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Exchange Private Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 </project>

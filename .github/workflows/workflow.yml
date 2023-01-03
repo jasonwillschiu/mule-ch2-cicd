@@ -87,7 +87,7 @@ jobs:
     
     - name: Deploy to Exchange
       run: |
-        mvn clean deploy
+        mvn deploy
 
     - name: Then deploy to Sandbox
       env:
