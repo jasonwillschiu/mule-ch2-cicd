@@ -87,7 +87,10 @@ jobs:
     
     - name: Deploy to Exchange
       run: |
-        mvn deploy
+        artifactName=$(ls *.jar | head -1)
+        mvn deploy \
+          -Dmule.artifact=$artifactName
+
 
     - name: Then deploy to Sandbox
       env:
