@@ -28,8 +28,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    # this nexus repo is required to download mule
-    - name: Add repo credentials	
+    # nexus repo creds might be required to download mule and other plugins
+    # also adding in anypoint exchange creds, which are our connected app client id and secret
+    - name: Add credentials	
       uses: s4u/maven-settings-action@v2.4.0	
       with:	
         servers: |	
@@ -37,6 +38,11 @@ jobs:
            "id": "mule-enterprise",	
            "username": "${{ secrets.MULE_NEXUS_USERNAME }}",	
            "password": "${{ secrets.MULE_NEXUS_PASSWORD }}"	
+          },
+          {
+          "id": "anypoint-exchange-v3",	
+           "username": "~~~Client~~~",	
+           "password": "${{ secrets.MULE_CLIENT_ID }}~?~${{ secrets.MULE_CLIENT_SECRET }}"	
           }]
     # an optional step to help with debugging maybe
     - name: Print effective-settings (optional)
