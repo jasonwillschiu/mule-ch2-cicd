@@ -45,9 +45,10 @@
 						<!-- modify target -->
 						<target>Cloudhub-US-East-2</target>
 						<muleVersion>4.4.0</muleVersion>
-						<connectedAppClientId>${clientId}</connectedAppClientId>
+            <server>anypoint-exchange-v3</server>
+						<!-- <connectedAppClientId>${clientId}</connectedAppClientId>
 						<connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
-						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
 						<applicationName>${appName}</applicationName>
 						<replicas>1</replicas>
 						<vCores>0.1</vCores>
