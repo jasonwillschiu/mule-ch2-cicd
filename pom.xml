@@ -8,16 +8,19 @@
 	<packaging>mule-application</packaging>
 
 	<name>mule-ch2-cicd</name>
-  <description>A mule application example uploaded using Exchange Maven Facade v3 then deployed to CH2</description>
+	<description>A mule application example uploaded using Exchange Maven Facade v3 then deployed to CH2</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.4.0-20220420</app.runtime>
-    <!-- error with version 3.8.1,
-     trying 3.7.1, error, need 3.8.1 -->
+		<!-- error with version 3.8.1,
+	 trying 3.7.1, error, need 3.8.1 -->
 		<mule.maven.plugin.version>3.8.1</mule.maven.plugin.version>
+		<tags/>
+		<categories>[]</categories>
+		<fields>[]</fields>
 	</properties>
 
 	<build>
@@ -34,7 +37,6 @@
 				<extensions>true</extensions>
 				<configuration>
 					<!-- classifier looks right here-->
-					<classifier>mule-application</classifier>
 					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
