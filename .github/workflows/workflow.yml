@@ -89,7 +89,8 @@ jobs:
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy \
-          -Dmule.artifact=$artifactName
+          -Dmule.artifact=$artifactName \
+          -DskipTests
 
 
     - name: Then deploy to Sandbox

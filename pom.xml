@@ -4,10 +4,11 @@
 	<!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
 	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule-ch2-cicd</name>
+  <description>A mule application example uploaded using Exchange Maven Facade v3 then deployed to CH2</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
