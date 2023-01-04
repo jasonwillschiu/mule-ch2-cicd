@@ -52,6 +52,11 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     
+    # try deploy here before we do the artifact stamp
+    - name: Deploy to Exchange
+      run: |
+        mvn deploy
+
     # allows us to see which commit hash is being deployed to cloudhub
     - name: Stamp artifact file name with commit hash
       run: |
