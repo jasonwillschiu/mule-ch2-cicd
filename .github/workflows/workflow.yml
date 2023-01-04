@@ -85,12 +85,12 @@ jobs:
       with:
         name: artifacts
     
-    - name: Deploy to Exchange
-      run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy \
-          -Dmule.artifact=$artifactName \
-          -DskipTests
+    # - name: Deploy to Exchange
+    #   run: |
+    #     artifactName=$(ls *.jar | head -1)
+    #     mvn deploy \
+    #       -Dmule.artifact=$artifactName \
+    #       -DskipTests
 
 
     - name: Then deploy to Sandbox
