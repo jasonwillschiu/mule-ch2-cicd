@@ -37,6 +37,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<!-- classifier looks right here-->
+          <classifier>mule-application</classifier>
 					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
