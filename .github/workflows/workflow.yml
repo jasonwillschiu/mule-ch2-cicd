@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
@@ -57,47 +57,6 @@ jobs:
       run: |
         mvn deploy
 
-    # allows us to see which commit hash is being deployed to cloudhub
-    - name: Stamp artifact file name with commit hash
-      run: |
-        artifactName1=$(ls target/*.jar | head -1)
-        commitHash=$(git rev-parse --short "$GITHUB_SHA")
-        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
-        mv $artifactName1 $artifactName2
-    # using @v1 instead of @master according to github recommendations
-    # https://github.com/actions/upload-artifact/issues/41
-    - name: Upload artifact 
-      uses: actions/upload-artifact@master
-      with:
-          name: artifacts
-          path: target/*.jar
-        
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:    
-    - uses: actions/checkout@v2
-    
-    - uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    
-    - uses: actions/download-artifact@master
-      with:
-        name: artifacts
-    
-    # - name: Deploy to Exchange
-    #   run: |
-    #     artifactName=$(ls *.jar | head -1)
-    #     mvn deploy \
-    #       -Dmule.artifact=$artifactName \
-    #       -DskipTests
-
-
     - name: Then deploy to Sandbox
       env:
         CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
@@ -111,3 +70,60 @@ jobs:
          -DclientSecret="$CLIENT_SECRET" \
          -DappName="$APP_NAME" \
          -DskipTests
+
+
+    # I have a feeling we don't need artifact because we're pulling from exchange
+    # allows us to see which commit hash is being deployed to cloudhub
+    # - name: Stamp artifact file name with commit hash
+    #   run: |
+    #     artifactName1=$(ls target/*.jar | head -1)
+    #     commitHash=$(git rev-parse --short "$GITHUB_SHA")
+    #     artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
+    #     mv $artifactName1 $artifactName2
+    # # using @v1 instead of @master according to github recommendations
+    # # https://github.com/actions/upload-artifact/issues/41
+    # - name: Upload artifact 
+    #   uses: actions/upload-artifact@master
+    #   with:
+    #       name: artifacts
+    #       path: target/*.jar
+        
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   steps:    
+  #   - uses: actions/checkout@v2
+    
+  #   - uses: actions/cache@v1
+  #     with:
+  #       path: ~/.m2/repository
+  #       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-maven-
+    
+  #   - uses: actions/download-artifact@master
+  #     with:
+  #       name: artifacts
+    
+  #   # - name: Deploy to Exchange
+  #   #   run: |
+  #   #     artifactName=$(ls *.jar | head -1)
+  #   #     mvn deploy \
+  #   #       -Dmule.artifact=$artifactName \
+  #   #       -DskipTests
+
+
+  #   - name: Then deploy to Sandbox
+  #     env:
+  #       CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
+  #       CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
+  #       APP_NAME: mule-ch2-cicd
+  #     run: |
+  #       artifactName=$(ls *.jar | head -1)
+  #       mvn deploy -DmuleDeploy \
+  #        -Dmule.artifact=$artifactName \
+  #        -DclientId="$CLIENT_ID" \
+  #        -DclientSecret="$CLIENT_SECRET" \
+  #        -DappName="$APP_NAME" \
+  #        -DskipTests
