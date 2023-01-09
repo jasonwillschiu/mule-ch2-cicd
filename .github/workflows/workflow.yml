@@ -34,12 +34,7 @@ jobs:
       uses: s4u/maven-settings-action@v2.4.0	
       with:	
         servers: |	
-          [{	
-           "id": "mule-enterprise",	
-           "username": "${{ secrets.MULE_NEXUS_USERNAME }}",	
-           "password": "${{ secrets.MULE_NEXUS_PASSWORD }}"	
-          },
-          {
+          [{
           "id": "anypoint-exchange-v3",	
            "username": "~~~Client~~~",	
            "password": "${{ secrets.MULE_CLIENT_ID }}~?~${{ secrets.MULE_CLIENT_SECRET }}"	
@@ -53,10 +48,12 @@ jobs:
       run: mvn -B package --file pom.xml
     
     # try deploy here before we do the artifact stamp
+    # each deploy to exchange needs an increase in version, else it'll fail and complain that the version already exists
     - name: Deploy to Exchange
       run: |
         mvn deploy
 
+    # if we change the APP_NAME, a new runtime is deployed
     - name: Then deploy to Sandbox
       env:
         CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
@@ -65,7 +62,6 @@ jobs:
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
-         -Dmule.artifact=$artifactName \
          -DclientId="$CLIENT_ID" \
          -DclientSecret="$CLIENT_SECRET" \
          -DappName="$APP_NAME" \
