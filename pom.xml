@@ -4,7 +4,8 @@
 	<!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
 	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+  <!-- using revision as the version, can only set using CICD -->
+	<version>${revision}</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule-ch2-cicd</name>
