@@ -77,10 +77,11 @@ jobs:
     - name: Get latest version from exchange called "EXCHANGE_VERSION_CLOUD"
       run: |
         echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=${{ env.GROUP_ID }}' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.[] | select(.assetId=="${{ env.APP_NAME }}") | .version')" >> $GITHUB_ENV
+    
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
     # a X.X.X-SNAPSHOT version can be overwritten
-    # maybe the env variables don't need ${{}} inside if statement
+    # a SNAPSHOT is an under development version that is non-release, it doesn't show up in exchange api calls above
     - name: Deploy to Exchange if snapshot version
       if: contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT')
       run: |
@@ -88,7 +89,7 @@ jobs:
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # avoid running twice with not contains snapshot
-    - name: Deploy to Exchange if new != current version and not contains snapshot
+    - name: Deploy to Exchange if new version
       if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
       run: |
         mvn deploy
@@ -109,59 +110,9 @@ jobs:
          -DappName="${{ env.APP_NAME }}" \
          -DskipTests
 
-
-    # I have a feeling we don't need artifact because we're pulling from exchange
-    # allows us to see which commit hash is being deployed to cloudhub
-    # - name: Stamp artifact file name with commit hash
-    #   run: |
-    #     artifactName1=$(ls target/*.jar | head -1)
-    #     commitHash=$(git rev-parse --short "$GITHUB_SHA")
-    #     artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
-    #     mv $artifactName1 $artifactName2
-    # # using @v1 instead of @master according to github recommendations
-    # # https://github.com/actions/upload-artifact/issues/41
-    # - name: Upload artifact 
-    #   uses: actions/upload-artifact@master
-    #   with:
-    #       name: artifacts
-    #       path: target/*.jar
-        
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-
-  #   steps:    
-  #   - uses: actions/checkout@v2
-    
-  #   - uses: actions/cache@v1
-  #     with:
-  #       path: ~/.m2/repository
-  #       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-  #       restore-keys: |
-  #         ${{ runner.os }}-maven-
-    
-  #   - uses: actions/download-artifact@master
-  #     with:
-  #       name: artifacts
-    
-  #   # - name: Deploy to Exchange
-  #   #   run: |
-  #   #     artifactName=$(ls *.jar | head -1)
-  #   #     mvn deploy \
-  #   #       -Dmule.artifact=$artifactName \
-  #   #       -DskipTests
-
-
-  #   - name: Then deploy to Sandbox
-  #     env:
-  #       CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
-  #       CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
-  #       APP_NAME: mule-ch2-cicd
-  #     run: |
-  #       artifactName=$(ls *.jar | head -1)
-  #       mvn deploy -DmuleDeploy \
-  #        -Dmule.artifact=$artifactName \
-  #        -DclientId="$CLIENT_ID" \
-  #        -DclientSecret="$CLIENT_SECRET" \
-  #        -DappName="$APP_NAME" \
-  #        -DskipTests
+    # if we change the APP_NAME, a new runtime is deployed
+    # only run if there's a new version, bash deals with strings by default, not boolean
+    - name: NO NEW VERSION WAS PUSHED to EXCHANGE or RUNTIME
+      if: env.NEW_VERSION!='true'
+      run: |
+        echo "NO NEW VERSION WAS PUSHED to EXCHANGE or RUNTIME"

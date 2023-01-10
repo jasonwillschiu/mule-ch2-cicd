@@ -4,6 +4,7 @@
 	<!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
 	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
+  <!-- edit version every time we make a change -->
 	<version>1.1.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
