@@ -14,10 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     # somewhat global variables here
     env:
-      # change this version if we want 
-      # EXCHANGE_VERSION_NEW: 1.0.5-SNAPSHOT
-      # set dynamically below EXCHANGE_VERSION_CURRENT: 1.0.4-SNAPSHOT
-      RUNTIME_APP_NAME: mule-ch2-cicd
+      APP_NAME: mule-ch2-cicd
 
     steps:
     # allows action to have access to the source code
@@ -62,9 +59,10 @@ jobs:
     
     # check version in POM file
     # trying step mvn package 
-    - name: Set current version to env variable called "EXCHANGE_VERSION_LOCAL"
+    - name: Grab local variables from pom.xml
       run: |
         echo "EXCHANGE_VERSION_LOCAL=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        echo "GROUP_ID=$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout)" >> $GITHUB_ENV
 
     # grab access token so we can use exchange API, write to variable called BEARER_TOKEN
     - name: Get access token for exchange API
@@ -78,7 +76,7 @@ jobs:
     # grab latest live version using exchange api
     - name: Get latest version from exchange called "EXCHANGE_VERSION_CLOUD"
       run: |
-        echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=98cd913d-de2c-4a27-9641-16ff1d2781c9' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.[] | select(.assetId=="mule-ch2-cicd") | .version')" >> $GITHUB_ENV
+        echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=${{ env.GROUP_ID }}' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.[] | select(.assetId=="${{ env.APP_NAME }}") | .version')" >> $GITHUB_ENV
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
     # a X.X.X-SNAPSHOT version can be overwritten
@@ -87,20 +85,24 @@ jobs:
       if: contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT')
       run: |
         mvn deploy
+        echo "NEW_VERSION=true"
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new != current version and not contains snapshot
       if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
       run: |
         mvn deploy
+        echo "NEW_VERSION=true"
 
     # if we change the APP_NAME, a new runtime is deployed
+    # only run if there's a new version
     - name: Then deploy to Sandbox
+      if: env.NEW_VERSION==true
       run: |
         mvn deploy -DmuleDeploy \
          -DclientId="${{ secrets.MULE_CLIENT_ID }}" \
          -DclientSecret="${{ secrets.MULE_CLIENT_SECRET }}" \
-         -DappName="${{ env.RUNTIME_APP_NAME }}" \
+         -DappName="${{ env.APP_NAME }}" \
          -DskipTests
 
 
