@@ -85,14 +85,14 @@ jobs:
       if: contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT')
       run: |
         mvn deploy
-        echo "NEW_VERSION=true"
+        echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new != current version and not contains snapshot
       if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
       run: |
         mvn deploy
-        echo "NEW_VERSION=true"
+        echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # if we change the APP_NAME, a new runtime is deployed
     # only run if there's a new version
