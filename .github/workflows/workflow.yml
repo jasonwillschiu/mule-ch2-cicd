@@ -94,14 +94,14 @@ jobs:
         mvn deploy
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
-    - name: view variables
-      run: |
-        env
+    # - name: view variables
+    #   run: |
+    #     env
 
     # if we change the APP_NAME, a new runtime is deployed
-    # only run if there's a new version
+    # only run if there's a new version, bash deals with strings by default, not boolean
     - name: Then deploy to Sandbox
-      if: env.NEW_VERSION==true
+      if: env.NEW_VERSION=='true'
       run: |
         mvn deploy -DmuleDeploy \
          -DclientId="${{ secrets.MULE_CLIENT_ID }}" \
