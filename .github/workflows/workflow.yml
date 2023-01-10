@@ -78,7 +78,7 @@ jobs:
     # grab latest live version using exchange api
     - name: Get latest version from exchange called "EXCHANGE_VERSION_CLOUD"
       run: |
-        echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=98cd913d-de2c-4a27-9641-16ff1d2781c9' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq '.[] | select(.assetId=="mule-ch2-cicd") | .version')" >> $GITHUB_ENV
+        echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=98cd913d-de2c-4a27-9641-16ff1d2781c9' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.[] | select(.assetId=="mule-ch2-cicd") | .version')" >> $GITHUB_ENV
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
     # a X.X.X-SNAPSHOT version can be overwritten
