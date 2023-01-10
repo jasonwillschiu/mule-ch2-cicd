@@ -15,7 +15,7 @@ jobs:
     # somewhat global variables here
     env:
       # change this version if we want 
-      EXCHANGE_VERSION_NEW: 1.0.5-SNAPSHOT
+      # EXCHANGE_VERSION_NEW: 1.0.5-SNAPSHOT
       # set dynamically below EXCHANGE_VERSION_CURRENT: 1.0.4-SNAPSHOT
       RUNTIME_APP_NAME: mule-ch2-cicd
 
@@ -62,22 +62,35 @@ jobs:
     
     # check version in POM file
     # trying step mvn package 
-    - name: Set current version to env variable called "EXCHANGE_VERSION_CURRENT"
+    - name: Set current version to env variable called "EXCHANGE_VERSION_LOCAL"
       run: |
-        echo "EXCHANGE_VERSION_CURRENT=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        echo "EXCHANGE_VERSION_LOCAL=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
+    # grab access token so we can use exchange API, write to variable called BEARER_TOKEN
+    - name: Get access token for exchange API
+      run: |
+        echo "BEARER_TOKEN=$(curl --location --request POST https://anypoint.mulesoft.com/accounts/api/v2/oauth2/token \
+        --header 'Content-Type: application/x-www-form-urlencoded' \
+        --data-urlencode 'client_id=${{ secrets.MULE_CLIENT_ID }}' \
+        --data-urlencode 'client_secret=${{ secrets.MULE_CLIENT_SECRET }}' \
+        --data-urlencode 'grant_type=client_credentials' | jq '.access_token')" >> $GITHUB_ENV
+
+    # grab latest live version using exchange api
+    - name: Get latest version from exchange called "EXCHANGE_VERSION_CLOUD"
+      run: |
+        echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=98cd913d-de2c-4a27-9641-16ff1d2781c9' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq '.[] | select(.assetId=="mule-ch2-cicd") | .version')" >> $GITHUB_ENV
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
     # a X.X.X-SNAPSHOT version can be overwritten
     # maybe the env variables don't need ${{}} inside if statement
     - name: Deploy to Exchange if snapshot version
-      if: contains(env.EXCHANGE_VERSION_NEW,'SNAPSHOT')
+      if: contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT')
       run: |
         mvn deploy
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new != current version and not contains snapshot
-      if: (env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT) && (!contains(env.EXCHANGE_VERSION_NEW,'SNAPSHOT'))
+      if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
       run: |
         mvn deploy
 
