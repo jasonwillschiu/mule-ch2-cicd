@@ -66,13 +66,18 @@ jobs:
       run: |
         echo "EXCHANGE_VERSION_CURRENT=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-    # try deploy here before we do the artifact stamp
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
     # a X.X.X-SNAPSHOT version can be overwritten
     # maybe the env variables don't need ${{}} inside if statement
-    - name: Deploy to Exchange
-      if: env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT
+    - name: Deploy to Exchange if snapshot version
+      if: contains(env.EXCHANGE_VERSION_NEW,'SNAPSHOT')
+      run: |
+        mvn deploy
+
+    # avoid running twice with not contains snapshot
+    - name: Deploy to Exchange if new != current version and not contains snapshot
+      if: (env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT) && (!contains(env.EXCHANGE_VERSION_NEW,'SNAPSHOT'))
       run: |
         mvn deploy
 
