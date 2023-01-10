@@ -66,15 +66,15 @@ jobs:
     
     # try deploy here before we do the artifact stamp
     # each deploy to exchange needs an increase in version, else it'll fail and complain that the version already exists
+    # maybe the env variables don't need ${{}} inside if statement
     - name: Deploy to Exchange
-      if: $${{ env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT}}
+      if: env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT
       run: |
         mvn deploy
 
     # if we change the APP_NAME, a new runtime is deployed
     - name: Then deploy to Sandbox
       run: |
-        artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -DclientId="${{ secrets.MULE_CLIENT_ID }}" \
          -DclientSecret="${{ secrets.MULE_CLIENT_SECRET }}" \
