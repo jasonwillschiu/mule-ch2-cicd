@@ -1,6 +1,9 @@
 # Build and deploy workflow to CH2
+# Logic here updates Exchange with the latest version
+# Also deploys to CH2 with the latest version
+# In production, you probably want logic to deploy to diff environments depending on version
 
-name: Build and Deploy to Sandbox CH2
+name: Build and Deploy to Sandbox in CH2
 
 # auto workflow runs on these
 on:
@@ -101,7 +104,7 @@ jobs:
 
     # if we change the APP_NAME, a new runtime is deployed
     # only run if there's a new version, bash deals with strings by default, not boolean
-    - name: Then deploy to Sandbox
+    - name: Deploy to Sandbox
       if: env.NEW_VERSION=='true'
       run: |
         mvn deploy -DmuleDeploy \
