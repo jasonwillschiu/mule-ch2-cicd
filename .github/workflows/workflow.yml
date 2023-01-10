@@ -23,10 +23,6 @@ jobs:
     # allows action to have access to the source code
     - uses: actions/checkout@v2
 
-    - name: Set current version to env variable called "EXCHANGE_VERSION_CURRENT"
-      run: |
-        echo "EXCHANGE_VERSION_CURRENT=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-
     # caches maven dependencies so after the first run, it'll be faster
     - uses: actions/cache@v1
       with:
@@ -60,12 +56,20 @@ jobs:
     - name: Print effective-settings (optional)
       run: mvn help:effective-settings
 
-    # i think this step is where the nexus credentials will be used
+    # build from the pom file
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     
+    # check version in POM file
+    # trying step mvn package 
+    - name: Set current version to env variable called "EXCHANGE_VERSION_CURRENT"
+      run: |
+        echo "EXCHANGE_VERSION_CURRENT=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
     # try deploy here before we do the artifact stamp
-    # each deploy to exchange needs an increase in version, else it'll fail and complain that the version already exists
+    # each deploy to exchange needs an increase in version for a non-snapshot version, 
+    # else it'll fail and complain that the version already exists
+    # a X.X.X-SNAPSHOT version can be overwritten
     # maybe the env variables don't need ${{}} inside if statement
     - name: Deploy to Exchange
       if: env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT
