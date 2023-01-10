@@ -57,9 +57,8 @@ jobs:
       run: mvn help:effective-settings
 
     # build from the pom file
-    # try set version here via revision variable
     - name: Build with Maven
-      run: mvn -B package -Drevision="${{ env.EXCHANGE_VERSION_NEW }}" --file pom.xml
+      run: mvn -B package --file pom.xml
     
     # check version in POM file
     # trying step mvn package 
@@ -74,13 +73,13 @@ jobs:
     - name: Deploy to Exchange if snapshot version
       if: contains(env.EXCHANGE_VERSION_NEW,'SNAPSHOT')
       run: |
-        mvn deploy -Drevision="${{ env.EXCHANGE_VERSION_NEW }}"
+        mvn deploy
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new != current version and not contains snapshot
       if: (env.EXCHANGE_VERSION_NEW != env.EXCHANGE_VERSION_CURRENT) && (!contains(env.EXCHANGE_VERSION_NEW,'SNAPSHOT'))
       run: |
-        mvn deploy -Drevision="${{ env.EXCHANGE_VERSION_NEW }}"
+        mvn deploy
 
     # if we change the APP_NAME, a new runtime is deployed
     - name: Then deploy to Sandbox
