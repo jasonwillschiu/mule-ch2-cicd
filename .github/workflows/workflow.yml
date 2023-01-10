@@ -94,6 +94,10 @@ jobs:
         mvn deploy
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
+    - name: view variables
+      run: |
+        env
+
     # if we change the APP_NAME, a new runtime is deployed
     # only run if there's a new version
     - name: Then deploy to Sandbox
