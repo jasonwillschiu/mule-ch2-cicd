@@ -81,6 +81,10 @@ jobs:
       run: |
         echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=${{ env.GROUP_ID }}' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.[] | select(.assetId=="${{ env.APP_NAME }}") | .version')" >> $GITHUB_ENV
     
+    # run specific M-unit test
+    - name: Run M-unit test3 with params
+      run: mvn test -Dmunit.test=test3-params.xml
+
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
     # a X.X.X-SNAPSHOT version can be overwritten
