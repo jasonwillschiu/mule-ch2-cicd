@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="munit-test1.xml" />
+	<munit:test name="munit-test1-mule-ch2-cicdFlowTest" doc:id="ba9a6719-4055-4ee7-a0df-d142e335f557" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-ch2-cicdFlow" doc:id="56c6f169-759f-41e2-882f-568bf7eb18c7" name="mule-ch2-cicdFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="876820ee-04c1-4f9d-a7ec-04b5aedd6654" expression="#[payload]" is="#[MunitTools::containsString('hey there from Cloud Hub 2.0 -- ')]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

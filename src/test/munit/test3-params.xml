@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="test3-params.xml" >
+		<munit:parameterizations>
+			<munit:parameterization name="test5-pass-snapshot" >
+				<munit:parameters >
+					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 -- v1.12.2-SNAPSHOT" />
+					<munit:parameter propertyName="expectedPayload" value="true" />
+				</munit:parameters>
+			</munit:parameterization>
+			<munit:parameterization name="test6-pass-semver" >
+				<munit:parameters >
+					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 -- v1.20.4" />
+					<munit:parameter propertyName="expectedPayload" value="true" />
+				</munit:parameters>
+			</munit:parameterization>
+			<munit:parameterization name="test7-fail-snapshot" >
+				<munit:parameters >
+					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 -- v1.12.7-MY-VER" />
+					<munit:parameter propertyName="expectedPayload" value="false" />
+				</munit:parameters>
+			</munit:parameterization>
+			<munit:parameterization name="test8-fail-semver" >
+				<munit:parameters >
+					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 -- v1.888.32" />
+					<munit:parameter propertyName="expectedPayload" value="false" />
+				</munit:parameters>
+			</munit:parameterization>
+			<!-- <munit:parameterization name="test9-actual-fail-semver" >
+				<munit:parameters >
+					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 &#45;&#45; v1.12.999-SNAPSHOT" />
+					<munit:parameter propertyName="expectedPayload" value="true" />
+				</munit:parameters>
+			</munit:parameterization> -->
+		</munit:parameterizations>
+	</munit:config>
+	<munit:test name="test3-params" doc:id="1115c339-78d4-4791-9ce5-04ef17895f7e" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="11cb03f6-3d0b-4d47-86c4-2c12257f8388" processor="set-payload">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="hey there from Cloud Hub 2.0 -- v1.1.0-SNAPSHOT" attributeName="value" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[p('inputPayload')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-ch2-cicdFlow" doc:id="6a801797-0c74-4ae7-95d1-5068be44137e" name="mule-ch2-cicdFlow"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b0ccf0b7-4ae5-4e8b-9679-6d142a478b4c" is="#[MunitTools::equalTo(p('expectedPayload'))]" expression='#[%dw 2.0&#10;var reg = /v\d{1,2}\.\d{1,2}\.\d{1,2}$|v\d{1,2}\.\d{1,2}\.\d{1,2}-SNAPSHOT/&#10;// contains1 will have boolean output&#10;var contains1 = payload contains(reg)&#10;output application/json&#10;---&#10;if (contains1==true) "true" else "false"&#10;//contains1]'/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

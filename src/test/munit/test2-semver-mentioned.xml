@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<munit:test name="semver-mentioned-test2-fail" doc:id="b535ebb3-32c2-475c-af45-8d955cfdbbb7" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="set too many digits in patch version" doc:id="85039df4-1792-4ca9-acd5-175b5b0afca4" cloneOriginalEvent="true">
+				<munit:payload value="hey there from Cloud Hub 2.0 -- v1.1.110-SNAPSHOT" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-ch2-cicdFlow" doc:id="ce019ccf-1b2f-4e63-ac78-40acbed70acd" name="mule-ch2-cicdFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4207f528-f6a7-4b2c-b764-5833a54a7121" is='#[MunitTools::equalTo(true)]' expression='#[%dw 2.0&#10;var reg = /v\d{1,2}\.\d{1,2}\.\d{1,2}$|v\d{1,2}\.\d{1,2}\.\d{1,2}-SNAPSHOT/&#10;// contains1 will have boolean output&#10;var contains1 = payload contains(reg)&#10;output application/json&#10;---&#10;//if (contains1==true) "true" else "false"&#10;contains1]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="semver-mentioned-test1-noSnapshot-pass" doc:id="9ca730d7-886d-4ea3-a30b-31102d5cab8e" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="set normal payload" doc:id="135d8b22-733b-4ccb-935d-cbda066ce33d" cloneOriginalEvent="true">
+				<munit:payload value="hey there from Cloud Hub 2.0 -- v1.21.10" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-ch2-cicdFlow" doc:id="0a9bd3d5-ba9a-425c-ad0f-d772a7ae0459" name="mule-ch2-cicdFlow" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="26699854-d91a-4616-966f-3a0df75ae033" expression='#[%dw 2.0&#10;var reg = /v\d{1,2}\.\d{1,2}\.\d{1,2}$|v\d{1,2}\.\d{1,2}\.\d{1,2}-SNAPSHOT/&#10;// contains1 will have boolean output&#10;var contains1 = payload contains(reg)&#10;output application/json&#10;---&#10;//if (contains1==true) "true" else "false"&#10;contains1]' is="#[MunitTools::equalTo(true)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="semver-mentioned-test3-badData-false" doc:id="fea17def-4c27-4634-97bf-dbf8d4aa7206" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="invalid suffix" doc:id="f34e3bdb-43e6-4f02-a110-fcf9b611b9c0" cloneOriginalEvent="true">
+				<munit:payload value="hey there from Cloud Hub 2.0 -- v1.1.10-MY-VER" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mule-ch2-cicdFlow" doc:id="adc89bf3-18da-4b3e-bad9-05daea805937" name="mule-ch2-cicdFlow" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="96a7ba07-0fc3-45c8-a793-39c5587bc02b" expression='#[%dw 2.0&#10;var reg = /v\d{1,2}\.\d{1,2}\.\d{1,2}$|v\d{1,2}\.\d{1,2}\.\d{1,2}-SNAPSHOT/&#10;// contains1 will have boolean output&#10;var contains1 = payload contains(reg)&#10;output application/json&#10;---&#10;//if (contains1==true) "true" else "false"&#10;contains1]' is="#[MunitTools::equalTo(false)]" />
+		</munit:validation>
+	</munit:test>
+
+</mule>

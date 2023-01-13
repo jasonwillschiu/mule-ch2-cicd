@@ -1,0 +1,12 @@
+test1-pass-snapshot:
+  inputPayload: hey there from Cloud Hub 2.0 -- v1.12.2-SNAPSHOT
+  expectedPayload: true
+test2-pass-semver:
+  inputPayload: hey there from Cloud Hub 2.0 -- v22.1.18
+  expectedPayload: true
+test3-fail-snapshot-error:
+  inputPayload: hey there from Cloud Hub 2.0 -- v1.12.20-MY-VER
+  expectedPayload: false
+test4-fail-semver-error:
+  inputPayload: hey there from Cloud Hub 2.0 -- v1.999.20
+  expectedPayload: false

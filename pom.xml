@@ -4,7 +4,7 @@
 	<!-- changed groupId to OrgId as per these instructions https://docs.mulesoft.com/exchange/to-publish-assets-maven -->
 	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
-  <!-- edit version every time we make a change -->
+	<!-- edit version every time we make a change -->
 	<version>1.1.0</version>
 	<packaging>mule-application</packaging>
 
@@ -22,6 +22,7 @@
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
+		<munit.version>2.3.13</munit.version>
 	</properties>
 
 	<build>
@@ -38,7 +39,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<!-- classifier looks right here-->
-          <classifier>mule-application-example</classifier>
+					<classifier>mule-application-example</classifier>
 					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
@@ -46,7 +47,7 @@
 						<!-- modify target -->
 						<target>Cloudhub-US-East-2</target>
 						<muleVersion>4.4.0</muleVersion>
-            <!-- <server>anypoint-exchange-v3</server> -->
+						<!-- <server>anypoint-exchange-v3</server> -->
 						<connectedAppClientId>${clientId}</connectedAppClientId>
 						<connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
 						<connectedAppGrantType>client_credentials</connectedAppGrantType>
@@ -59,6 +60,29 @@
 							<generateDefaultPublicUrl>true</generateDefaultPublicUrl>
 						</deploymentSettings>
 					</cloudhub2Deployment>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
+				<version>${munit.version}</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+							<goal>coverage-report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<coverage>
+						<runCoverage>true</runCoverage>
+						<formats>
+							<format>html</format>
+						</formats>
+					</coverage>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -76,6 +100,26 @@
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.3</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-runner</artifactId>
+			<version>2.3.13</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-tools</artifactId>
+			<version>2.3.13</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.weave</groupId>
+			<artifactId>assertions</artifactId>
+			<version>1.0.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -104,7 +148,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-    <!-- <repository>
+		<!-- <repository>
 			<id>anypoint-exchange-v3</id>
 			<name>Exchange Private Repository</name>
 			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
