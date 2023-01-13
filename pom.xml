@@ -22,7 +22,7 @@
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
-		<munit.version>2.3.13</munit.version>
+		<munit.version>2.3.14</munit.version>
 	</properties>
 
 	<build>
@@ -72,13 +72,13 @@
 						<phase>test</phase>
 						<goals>
 							<goal>test</goal>
-							<goal>coverage-report</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
+          <runtimeProduct>MULE</runtimeProduct>
 					<coverage>
-						<runCoverage>true</runCoverage>
+						<runCoverage>false</runCoverage>
 						<formats>
 							<format>html</format>
 						</formats>
