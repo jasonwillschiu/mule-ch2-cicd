@@ -76,7 +76,9 @@
 					</execution>
 				</executions>
 				<configuration>
-          <runtimeProduct>MULE</runtimeProduct>
+          <!-- runtimeProduct essential if we don't have an artifact -->
+          <!-- Enterprise Edition required for munit? -->
+          <runtimeProduct>MULE_EE</runtimeProduct>
 					<coverage>
 						<runCoverage>false</runCoverage>
 						<formats>
