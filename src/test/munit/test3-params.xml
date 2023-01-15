@@ -35,7 +35,7 @@
 			</munit:parameterization>
 			<!-- <munit:parameterization name="test9-actual-fail-semver" >
 				<munit:parameters >
-					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 &#45;&#45; v1.12.999-SNAPSHOT" />
+					<munit:parameter propertyName="inputPayload" value="hey there from Cloud Hub 2.0 - - v1.12.999-SNAPSHOT" />
 					<munit:parameter propertyName="expectedPayload" value="true" />
 				</munit:parameters>
 			</munit:parameterization> -->
@@ -44,9 +44,6 @@
 	<munit:test name="test3-params" doc:id="1115c339-78d4-4791-9ce5-04ef17895f7e" description="Test">
 		<munit:behavior>
 			<munit-tools:mock-when doc:name="Mock when" doc:id="11cb03f6-3d0b-4d47-86c4-2c12257f8388" processor="set-payload">
-				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="hey there from Cloud Hub 2.0 -- v1.1.0-SNAPSHOT" attributeName="value" />
-				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[p('inputPayload')]" />
 				</munit-tools:then-return>

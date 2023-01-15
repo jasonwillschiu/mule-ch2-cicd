@@ -57,6 +57,7 @@
 						<deploymentSettings>
 							<forwardSslSession>false</forwardSslSession>
 							<lastMileSecurity>false</lastMileSecurity>
+              <!-- generateDefaultPublicUrl requires mule.maven.plugin.version >= 3.8.1 -->
 							<generateDefaultPublicUrl>true</generateDefaultPublicUrl>
 						</deploymentSettings>
 					</cloudhub2Deployment>
