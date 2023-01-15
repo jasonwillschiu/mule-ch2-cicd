@@ -18,6 +18,8 @@ jobs:
     # somewhat global variables here
     env:
       APP_NAME: mule-ch2-cicd
+      # default pom file is pom.xml
+      POM_FILE: pom-no-munit.xml
 
     steps:
     # allows action to have access to the source code
@@ -64,7 +66,7 @@ jobs:
     # trying step mvn package 
     - name: Grab local variables from pom.xml
       run: |
-        echo "EXCHANGE_VERSION_LOCAL=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file pom-no-munit.xml)" >> $GITHUB_ENV
+        echo "EXCHANGE_VERSION_LOCAL=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file ${{ env.POM_FILE }})" >> $GITHUB_ENV
         echo "GROUP_ID=$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout)" >> $GITHUB_ENV
 
     # grab access token so we can use exchange API, write to variable called BEARER_TOKEN
@@ -93,14 +95,14 @@ jobs:
     - name: Deploy to Exchange if snapshot version
       if: contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT')
       run: |
-        mvn deploy
+        mvn deploy --file ${{ env.POM_FILE }}
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new version
       if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
       run: |
-        mvn deploy
+        mvn deploy --file ${{ env.POM_FILE }}
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # - name: view variables
@@ -112,7 +114,8 @@ jobs:
     - name: Deploy to Sandbox
       if: env.NEW_VERSION=='true'
       run: |
-        mvn deploy -DmuleDeploy \
+        mvn deploy --file ${{ env.POM_FILE }} \
+         -DmuleDeploy \
          -DclientId="${{ secrets.MULE_CLIENT_ID }}" \
          -DclientSecret="${{ secrets.MULE_CLIENT_SECRET }}" \
          -DappName="${{ env.APP_NAME }}" \
