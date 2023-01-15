@@ -64,7 +64,7 @@ jobs:
     # trying step mvn package 
     - name: Grab local variables from pom.xml
       run: |
-        echo "EXCHANGE_VERSION_LOCAL=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        echo "EXCHANGE_VERSION_LOCAL=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file pom-no-munit.xml)" >> $GITHUB_ENV
         echo "GROUP_ID=$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout)" >> $GITHUB_ENV
 
     # grab access token so we can use exchange API, write to variable called BEARER_TOKEN
