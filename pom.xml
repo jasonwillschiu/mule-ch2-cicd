@@ -5,7 +5,7 @@
 	<groupId>98cd913d-de2c-4a27-9641-16ff1d2781c9</groupId>
 	<artifactId>mule-ch2-cicd</artifactId>
 	<!-- edit version every time we make a change -->
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule-ch2-cicd</name>

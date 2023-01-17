@@ -19,7 +19,7 @@ jobs:
     env:
       APP_NAME: mule-ch2-cicd
       # default pom file is pom.xml
-      POM_FILE: pom-no-munit.xml
+      POM_FILE: pom.xml
 
     steps:
     # allows action to have access to the source code
@@ -60,7 +60,7 @@ jobs:
 
     # build from the pom file
     - name: Build with Maven
-      run: mvn -B package --file pom-no-munit.xml
+      run: mvn -B package --file ${{ env.POM_FILE }}
     
     # check version in POM file
     # trying step mvn package 
