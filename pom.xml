@@ -80,8 +80,8 @@
           <!-- runtimeProduct essential if we don't have an artifact -->
           <!-- Enterprise Edition required for munit? -->
           <runtimeProduct>MULE_EE</runtimeProduct>
-          <!-- try skip tests here to run them in  -->
-          <skipMunitTests>true</skipMunitTests>
+          <!-- this skips munit for manual running too  -->
+          <!-- <skipMunitTests>true</skipMunitTests> -->
 					<coverage>
 						<runCoverage>false</runCoverage>
 						<formats>
