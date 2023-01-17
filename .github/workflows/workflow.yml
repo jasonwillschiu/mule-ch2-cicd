@@ -60,7 +60,12 @@ jobs:
 
     # build from the pom file
     - name: Build with Maven
-      run: mvn -B package --file ${{ env.POM_FILE }}
+      run: mvn -B package --file ${{ env.POM_FILE }} test -Dmunit.test=test3-params.xml
+
+    # run specific M-unit test
+    # might need to skip tests in the pom file and only run test here for desired separation
+    - name: Run M-unit test3 with params
+      run: mvn test -Dmunit.test=test3-params.xml
     
     # check version in POM file
     # trying step mvn package 
@@ -82,11 +87,6 @@ jobs:
     - name: Get latest version from exchange called "EXCHANGE_VERSION_CLOUD"
       run: |
         echo "EXCHANGE_VERSION_CLOUD=$(curl --location --request GET 'https://anypoint.mulesoft.com/exchange/api/v1/assets?organizationId=${{ env.GROUP_ID }}' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.[] | select(.assetId=="${{ env.APP_NAME }}") | .version')" >> $GITHUB_ENV
-    
-    # run specific M-unit test
-    # might need to skip tests in the pom file and only run test here for desired separation
-    - name: Run M-unit test3 with params
-      run: mvn test -Dmunit.test=test3-params.xml
 
     # each deploy to exchange needs an increase in version for a non-snapshot version, 
     # else it'll fail and complain that the version already exists
