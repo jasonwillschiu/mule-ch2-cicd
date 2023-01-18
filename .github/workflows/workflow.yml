@@ -20,9 +20,9 @@ jobs:
       APP_NAME: mule-ch2-cicd
       # default pom file is pom.xml
       POM_FILE: pom.xml
-      # try running '' for no custom command
-      # MUNIT_CUSTOM_TEST_COMMAND: 'test -Dmunit.test=test3-params.xml'
-      MUNIT_CUSTOM_TEST_COMMAND: ''
+      # set value to '' to test all
+      MUNIT_CUSTOM_FILE: '-Dmunit.test=test3-params.xml'
+      # MUNIT_CUSTOM_FILE: ''
 
     steps:
     # allows action to have access to the source code
@@ -68,7 +68,7 @@ jobs:
     # run specific M-unit test
     # might need to skip tests in the pom file and only run test here for desired separation
     - name: Run M-unit test3 with params
-      run: mvn test ${{ env.MUNIT_CUSTOM_TEST_COMMAND }}
+      run: mvn test ${{ env.MUNIT_CUSTOM_FILE }}
     
     # check version in POM file
     # trying step mvn package 
@@ -98,14 +98,14 @@ jobs:
     - name: Deploy to Exchange if snapshot version
       if: contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT')
       run: |
-        mvn deploy --file ${{ env.POM_FILE }} ${{ env.MUNIT_CUSTOM_TEST_COMMAND }}
+        mvn deploy --file ${{ env.POM_FILE }} -DskipTests
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new version
       if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
       run: |
-        mvn deploy --file ${{ env.POM_FILE }} ${{ env.MUNIT_CUSTOM_TEST_COMMAND }}
+        mvn deploy --file ${{ env.POM_FILE }} -DskipTests
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
     # - name: view variables
