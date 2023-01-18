@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</http:listener-config>
 	<flow name="mule-ch2-cicdFlow" doc:id="31e7c87c-12b8-4b63-953b-6ddcb0831cef" >
 		<http:listener doc:name="Listener" doc:id="c43888a4-4268-4a9b-bc98-2d873489916d" config-ref="HTTP_Listener_config" path="/ch2-hello"/>
-		<set-payload value="hey there from Cloud Hub 2.0 -- v1.1.2" doc:name="Set Payload" doc:id="2dd2be4c-92a9-453c-9cf5-d9cbb635c370" />
+		<set-payload value="hey there from Cloud Hub 2.0 -- v1.1.3" doc:name="Set Payload" doc:id="2dd2be4c-92a9-453c-9cf5-d9cbb635c370" />
 		<logger level="INFO" doc:name="Logger" doc:id="3e67c794-2887-490e-818f-beec4c586ebc" message="#[payload]"/>
 	</flow>
 </mule>
