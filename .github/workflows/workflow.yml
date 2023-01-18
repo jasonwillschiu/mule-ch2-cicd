@@ -21,7 +21,8 @@ jobs:
       # default pom file is pom.xml
       POM_FILE: pom.xml
       # try running '' for no custom command
-      MUNIT_CUSTOM_TEST_COMMAND: 'test -Dmunit.test=test3-params.xml'
+      # MUNIT_CUSTOM_TEST_COMMAND: 'test -Dmunit.test=test3-params.xml'
+      MUNIT_CUSTOM_TEST_COMMAND: ''
 
     steps:
     # allows action to have access to the source code
