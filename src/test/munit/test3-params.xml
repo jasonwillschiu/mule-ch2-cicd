@@ -53,7 +53,7 @@
 			<flow-ref doc:name="Flow-ref to mule-ch2-cicdFlow" doc:id="6a801797-0c74-4ae7-95d1-5068be44137e" name="mule-ch2-cicdFlow"/>
 		</munit:execution>
 		<munit:validation>
-			<munit-tools:assert-that doc:name="Assert that" doc:id="b0ccf0b7-4ae5-4e8b-9679-6d142a478b4c" is="#[MunitTools::equalTo(p('expectedPayload'))]" expression='#[%dw 2.0&#10;var reg = /v\d{1,2}\.\d{1,2}\.\d{1,2}$|v\d{1,2}\.\d{1,2}\.\d{1,2}-SNAPSHOT/&#10;// contains1 will have boolean output&#10;var contains1 = payload contains(reg)&#10;output application/json&#10;---&#10;if (contains1==true) "true" else "false"&#10;//contains1]'/>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b0ccf0b7-4ae5-4e8b-9679-6d142a478b4c" is="#[MunitTools::equalTo(p('expectedPayload'))]" expression='#[%dw 2.0&#10;// test v1.1.1 and v1.1.1-SNAPSHOT is valid&#10;// and v1.1.999 or v1.1.1-MYVER is invalid&#10;var reg = /v\d{1,2}\.\d{1,2}\.\d{1,2}$|v\d{1,2}\.\d{1,2}\.\d{1,2}-SNAPSHOT/&#10;// contains1 will have boolean output&#10;var contains1 = payload contains(reg)&#10;output application/json&#10;---&#10;if (contains1==true) "true" else "false"&#10;//contains1]'/>
 		</munit:validation>
 	</munit:test>
 

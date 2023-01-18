@@ -63,7 +63,7 @@ jobs:
 
     # build from the pom file
     - name: Build with Maven
-      run: mvn -B package --file ${{ env.POM_FILE }} ${{ env.MUNIT_CUSTOM_TEST_COMMAND }}
+      run: mvn -B package --file ${{ env.POM_FILE }} -DskipTests
 
     # run specific M-unit test
     # might need to skip tests in the pom file and only run test here for desired separation
