@@ -1,5 +1,6 @@
 #%Validation Profile 1.0
-
+# we must have the accompanying exchange.json file with the "descriptorVersion":"1.0.0" property
+# https://help.mulesoft.com/s/article/Error-Legacy-project-descriptor-found-Validation-will-be-run-in-legacy-mode-Thrown-Executing-Command-anypoint-cli-governance-api-validate--ruleset
 profile: Has title, description and documentation
 
 description: |

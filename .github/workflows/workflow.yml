@@ -125,7 +125,7 @@ jobs:
       run: |
         pwd
         ls
-        anypoint-cli-v4 governance:api:validate 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset/1.0.0 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --bearer ${{ env.BEARER_TOKEN}} --organization ${{ env.GROUP_ID }}
+        anypoint-cli-v4 governance:api:validate 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset2/1.0.0 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --bearer ${{ env.BEARER_TOKEN}} --organization ${{ env.GROUP_ID }}
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new version

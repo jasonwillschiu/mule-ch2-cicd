@@ -1,0 +1,1 @@
+{ "main":"ruleset.yaml", "name":"Has Title, Desc and Docs - Ruleset2", "organizationId":"98cd913d-de2c-4a27-9641-16ff1d2781c9", "groupId":"98cd913d-de2c-4a27-9641-16ff1d2781c9", "assetId":"has-title-desc-and-docs2", "version":"1.0.0", "classifier":"ruleset", "dependencies":[], "tags":[], "descriptorVersion": "1.0.0" }
