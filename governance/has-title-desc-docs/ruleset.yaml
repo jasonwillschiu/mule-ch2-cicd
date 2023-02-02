@@ -1,0 +1,41 @@
+#%Validation Profile 1.0
+
+profile: Has title, description and documentation
+
+description: |
+  This ruleset is to test CICD and API Governance using the anypoint-cli-v4
+
+tags:
+  - test1
+
+# only violations will trigger conformant or not conformant
+violation:
+  - api-must-have-title
+
+# warnings show up when diving into the api in the API Gov GUI
+warning:
+  - api-must-have-description
+  - api-must-have-documentation
+
+validations:
+
+  api-must-have-title:
+    message: Provide the title for the API.
+    targetClass: apiContract.WebAPI
+    propertyConstraints:
+      core.name:
+        minCount: 1
+
+  api-must-have-description:
+    message: Provide the description for the API.
+    targetClass: apiContract.WebAPI
+    propertyConstraints:
+      core.description:
+        minCount: 1
+
+  api-must-have-documentation:
+    message: Provide the documentation for the API.
+    targetClass: apiContract.WebAPI
+    propertyConstraints:
+      core.documentation:
+        minCount: 1

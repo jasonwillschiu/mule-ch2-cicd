@@ -49,3 +49,5 @@ velocity.log
 
 # Jason added
 scratch.txt
+# anypoint cli built in node
+node_modules/

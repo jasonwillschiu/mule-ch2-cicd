@@ -8,7 +8,8 @@ name: Build and Deploy to Sandbox in CH2
 # auto workflow runs on these
 on:
   push:
-    branches: [ main ]
+  # also push code on the api-gov1 branch to test before I merge
+    branches: [ main, api-gov1 ]
 # allows manual trigger for workflow in Actions tab
   workflow_dispatch:
     
@@ -40,6 +41,14 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
+    # setup nodejs in ubuntu with caching, so we can use anypoint-cli-v4
+    - name: Set up NodeJS 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+
     # this part adds credentials maven instead of having a settings.xml file
     # quite a nice way to avoid having another file and less risky way of inserting credentials
     # turns out we don't need nexus credentials for a basic app, but likely will for paid connectors (SAP, HL7, etc)
@@ -57,9 +66,17 @@ jobs:
            "username": "${{ secrets.MULE_NEXUS_USERNAME }}",	
            "password": "${{ secrets.MULE_NEXUS_PASSWORD }}"	
           }]
-    # an optional step to help with debugging maybe
-    - name: Print effective-settings (optional)
+    # an optional step to show the file created
+    - name: Show settings file created from Add Creds step
       run: mvn help:effective-settings
+
+    # try api governance validation before building the rest
+    # GAVs are the jumble/name/version, find them in exchange via the cli or exhange api
+    - name: Try API Governance validate
+      run: |
+        pwd
+        ls
+        anypoint-cli-v4 governance:api:validate --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset/1.0.0
 
     # build from the pom file
     - name: Build with Maven
