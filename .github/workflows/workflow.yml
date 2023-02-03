@@ -121,11 +121,19 @@ jobs:
     # try api governance validation before building the rest
     # GAVs are the jumble/name/version, find them in exchange via the cli or exhange api
     # commands complains of missing "spec", but I have it in --remote
-    - name: Try API Governance validate
+    - name: Try API Governance validate, this should pass
       run: |
-        pwd
-        ls
-        anypoint-cli-v4 governance:api:validate 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset2/1.0.0 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --bearer ${{ env.BEARER_TOKEN}} --organization ${{ env.GROUP_ID }}
+        anypoint-cli governance api validate --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset2/1.0.0 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --bearer ${{ env.BEARER_TOKEN}}
+
+    # A failing governance test, 1 failure
+    - name: Try API Governance validate, this should fail with 1 error
+      run: |
+        anypoint-cli governance api validate --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset/1.0.2 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec1/1.0.0 --bearer ${{ env.BEARER_TOKEN}}
+
+    # A failing governance test, 2 failures
+    - name: Try API Governance validate, this should fail with 2 errors
+      run: |
+        anypoint-cli governance api validate --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset/1.0.2 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec2-no-desc/1.0.0 --bearer ${{ env.BEARER_TOKEN}}
 
     # avoid running twice with not contains snapshot
     - name: Deploy to Exchange if new version
