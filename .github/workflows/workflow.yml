@@ -163,9 +163,9 @@ jobs:
         api-mgr api deploy ${{ env.AUTO_DISCOVERY_ID}}
         exit
 
-    - name: view variables
-      run: |
-        env
+    # - name: view variables
+    #   run: |
+    #     env
 
     # if we change the APP_NAME, a new runtime is deployed
     # only run if there's a new version, bash deals with strings by default, not boolean
