@@ -115,6 +115,13 @@ jobs:
         mvn deploy --file ${{ env.POM_FILE }} -DskipTests
         echo "NEW_VERSION=true" >> $GITHUB_ENV
 
+    # avoid running twice with not contains snapshot
+    - name: Deploy to Exchange if new version
+      if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
+      run: |
+        mvn deploy --file ${{ env.POM_FILE }} -DskipTests
+        echo "NEW_VERSION=true" >> $GITHUB_ENV
+
     # try api governance validation before building the rest
     # GAVs are the jumble/name/version, find them in exchange via the cli or exhange api
     # commands complains of missing "spec", but I have it in --remote
@@ -132,12 +139,29 @@ jobs:
       run: |
         anypoint-cli governance api validate --remote-rulesets 98cd913d-de2c-4a27-9641-16ff1d2781c9/has-title-desc-and-docs---ruleset/1.0.2 --remote 98cd913d-de2c-4a27-9641-16ff1d2781c9/hello-world-spec2-no-desc/1.0.0 --bearer ${{ env.BEARER_TOKEN}}
 
-    # avoid running twice with not contains snapshot
-    - name: Deploy to Exchange if new version
-      if: (env.EXCHANGE_VERSION_LOCAL != env.EXCHANGE_VERSION_CLOUD) && (!contains(env.EXCHANGE_VERSION_LOCAL,'SNAPSHOT'))
+    # create api gateway - cloudhub proxy app
+    # see if we can create in interactive mode
+    - name: Try create api gateway - cloudhub proxy app
       run: |
-        mvn deploy --file ${{ env.POM_FILE }} -DskipTests
-        echo "NEW_VERSION=true" >> $GITHUB_ENV
+        anypoint-cli --bearer ${{ env.BEARER_TOKEN}}
+        use environment Sandbox
+        anypoint-cli api-mgr api manage --type http --muleVersion4OrAbove true --deploymentType cloudhub --withProxy true --uri https://mule-ch2-cicd-0ks4d8.5sc6y6-1.usa-e2.cloudhub.io/ --scheme http --port 8081 --path / --apiInstanceLabel proxyFromCLI55 mule-ch2-specforproxy 1.0.0
+        exit
+
+    # pull the new gateway id, can't be done with anypoint cli until working out environments without interactive mode
+    # proxyFromCLI55 is the api instance label
+    - name: Try get the auto discovery id
+      run: |
+        echo "AUTO_DISCOVERY_ID=$(curl --location --request GET 'https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/98cd913d-de2c-4a27-9641-16ff1d2781c9/environments/4964e8fc-b33d-4a05-8f9f-b4ef4b9a9293/apis?limit=20&offset=0&pinnedFirst=true&sort=name&ascending=false' --header 'Authorization: Bearer ${{ env.BEARER_TOKEN}}' --header 'Content-Type: application/json' | jq -r '.instances | .[] | select(.instanceLabel=="proxyFromCLI55") | .autodiscoveryInstanceName | .[3:]')" >> $GITHUB_ENV
+
+    # deploy the new proxy app
+    # see if we can create in interactive mode
+    - name: Try create api gateway - cloudhub proxy app
+      run: |
+        anypoint-cli --bearer ${{ env.BEARER_TOKEN}}
+        use environment Sandbox
+        api-mgr api deploy ${{ env.AUTO_DISCOVERY_ID}}
+        exit
 
     # - name: view variables
     #   run: |

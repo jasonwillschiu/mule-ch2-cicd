@@ -1,0 +1,11 @@
+- policyRef:
+    name: rate-limiting-flex-3-per-60-sec
+  config:
+    rateLimits:
+      - maximumRequests: 3
+        timePeriodInMilliseconds: 60000
+    keySelector: "#[attributes.method]"
+    exposeHeaders: true
+    clusterizable: false
+
+# The #[attributes.method] DataWeave expression creates one group for each available method in HTTP, for example, the policy rate-limits GET requests independently of POST requests.
