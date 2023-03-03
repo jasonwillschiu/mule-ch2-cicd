@@ -9,7 +9,6 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4d61a93d-c4e5-4872-94b6-95a22e01a61f" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<api-gateway:autodiscovery apiId="18520309" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="9ea03e14-0174-40b1-b634-c387322ec121" flowRef="mule-ch2-cicdFlow" />
 	<flow name="mule-ch2-cicdFlow" doc:id="31e7c87c-12b8-4b63-953b-6ddcb0831cef" >
 		<http:listener doc:name="Listener" doc:id="c43888a4-4268-4a9b-bc98-2d873489916d" config-ref="HTTP_Listener_config" path="/ch2-hello"/>
 		<set-payload value="hey there from Cloud Hub 2.0 -- v1.1.3, with api-manager tests" doc:name="Set Payload" doc:id="2dd2be4c-92a9-453c-9cf5-d9cbb635c370" />
