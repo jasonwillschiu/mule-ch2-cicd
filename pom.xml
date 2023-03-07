@@ -24,7 +24,7 @@
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
-		<munit.version>2.3.14</munit.version>
+		<munit.version>2.3.13</munit.version>
 	</properties>
 
 	<build>
@@ -126,7 +126,7 @@
 		<dependency>
 			<groupId>org.mule.weave</groupId>
 			<artifactId>assertions</artifactId>
-			<version>1.0.2</version>
+			<version>1.2.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
