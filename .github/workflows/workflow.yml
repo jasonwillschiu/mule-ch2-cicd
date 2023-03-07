@@ -9,7 +9,7 @@ name: Build and Deploy to Sandbox in CH2
 on:
   push:
   # also push code on the api-gov1 branch to test before I merge
-    branches: [ main, api-manager]
+    branches: [ main]
 # allows manual trigger for workflow in Actions tab
   workflow_dispatch:
     
@@ -20,7 +20,7 @@ jobs:
     env:
       APP_NAME: mule-ch2-cicd
       # default pom file is pom.xml
-      POM_FILE: pom.xml
+      POM_FILE: pom-no-munit.xml
       # set value to '' to test all
       MUNIT_CUSTOM_FILE: '-Dmunit.test=test3-params.xml'
       # MUNIT_CUSTOM_FILE: ''
