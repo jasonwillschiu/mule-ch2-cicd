@@ -51,3 +51,6 @@ velocity.log
 scratch.txt
 # anypoint cli built in node
 node_modules/
+governance/
+policy/
+.vscode/
