@@ -20,7 +20,7 @@ jobs:
     env:
       APP_NAME: mule-ch2-cicd
       # default pom file is pom.xml
-      POM_FILE: pom-no-munit.xml
+      POM_FILE: pom.xml
       # set value to '' to test all
       MUNIT_CUSTOM_FILE: '-Dmunit.test=test3-params.xml'
       # MUNIT_CUSTOM_FILE: ''
