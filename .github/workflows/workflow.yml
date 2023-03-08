@@ -57,6 +57,12 @@ jobs:
         anypoint-cli-v4 plugins
         anypoint-cli-v4 --version
 
+    # check maven version, new bug breaking cicd is Maven Version 3.9.0 isn't compatible with Mule yet
+    # https://help.mulesoft.com/s/article/Issues-with-Maven-3-9-0-when-deploying
+    - name: Check Maven version
+      run: |
+        mvn -version
+
     # this part adds credentials maven instead of having a settings.xml file
     # quite a nice way to avoid having another file and less risky way of inserting credentials
     # turns out we don't need nexus credentials for a basic app, but likely will for paid connectors (SAP, HL7, etc)
