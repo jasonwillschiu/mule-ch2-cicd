@@ -18,9 +18,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.4.0-20230217</app.runtime>
-		<!-- error with version 3.8.1,
-	 trying 3.7.1, error, need 3.8.1 -->
-		<mule.maven.plugin.version>3.7.1</mule.maven.plugin.version>
+		<!-- version 3.8.1 or greater needed -->
+		<mule.maven.plugin.version>3.8.1</mule.maven.plugin.version>
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
