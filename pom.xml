@@ -19,7 +19,7 @@
 
 		<app.runtime>4.4.0-20230217</app.runtime>
 		<!-- version 3.8.1 or greater needed -->
-		<mule.maven.plugin.version>3.8.4</mule.maven.plugin.version>
+		<mule.maven.plugin.version>3.8.6</mule.maven.plugin.version>
 		<tags/>
 		<categories>[]</categories>
 		<fields>[]</fields>
