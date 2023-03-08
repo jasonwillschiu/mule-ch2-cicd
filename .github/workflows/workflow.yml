@@ -57,20 +57,26 @@ jobs:
         anypoint-cli-v4 plugins
         anypoint-cli-v4 --version
 
+    # try install older maven version
+    # wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+    # tar -xvf apache-maven-3.8.6-bin.tar.gz
+    # mv apache-maven-3.8.6 /opt/
+    # echo "
+    #   M2_HOME='/opt/apache-maven-3.6.3'
+    #   PATH="$M2_HOME/bin:$PATH"
+    #   export PATH" >> ~/.profile
+    # source .profile
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.8.6
     # 
     # check maven version, new bug breaking cicd is Maven Version 3.9.0 isn't compatible with Mule yet
     # https://help.mulesoft.com/s/article/Issues-with-Maven-3-9-0-when-deploying
     - name: Install and Check Maven version
       run: |
-        wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
-        tar -xvf apache-maven-3.8.6-bin.tar.gz
-        mv apache-maven-3.8.6 /opt/
-        echo "
-          M2_HOME='/opt/apache-maven-3.6.3'
-          PATH="$M2_HOME/bin:$PATH"
-          export PATH" >> ~/.profile
-        source .profile
         mvn -version
+      
 
     # this part adds credentials maven instead of having a settings.xml file
     # quite a nice way to avoid having another file and less risky way of inserting credentials
