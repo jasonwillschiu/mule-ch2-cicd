@@ -49,13 +49,10 @@ jobs:
         node-version: 16
         cache: 'npm'
     
-    # install anypoint-cli-v4
-    - name: Install anypoint-cli-v4
+    # install anypoint-cli-v3
+    - name: Install anypoint-cli-v3
       run: |
-        npm install -g anypoint-cli-v4
-        anypoint-cli-v4 plugins:install anypoint-cli-governance-plugin
-        anypoint-cli-v4 plugins
-        anypoint-cli-v4 --version
+        npm install -g anypoint-cli@latest
 
     # try install older maven version
     - name: Install Maven v3.8.6
