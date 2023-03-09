@@ -154,12 +154,16 @@ jobs:
 
     # create api gateway - cloudhub proxy app
     # see if we can create in interactive mode
-    - name: Try create api gateway - cloudhub proxy app
-      steps:
-        - run: anypoint-cli --bearer ${{ env.BEARER_TOKEN}}
-        - run: use environment Sandbox
-        - run: anypoint-cli api-mgr api manage --type http --muleVersion4OrAbove true --deploymentType cloudhub --withProxy true --uri https://mule-ch2-cicd-0ks4d8.5sc6y6-1.usa-e2.cloudhub.io/ --scheme http --port 8081 --path / --apiInstanceLabel proxyFromCLI55 mule-ch2-specforproxy 1.0.0
-        - run: exit
+    - name: Try create api gateway - cloudhub proxy app - step1
+      run: anypoint-cli --bearer ${{ env.BEARER_TOKEN}}
+    
+    # 
+    - name: Try create api gateway - cloudhub proxy app - step2
+      run: use environment Sandbox
+    - name: Try create api gateway - cloudhub proxy app - step3   
+      run: anypoint-cli api-mgr api manage --type http --muleVersion4OrAbove true --deploymentType cloudhub --withProxy true --uri https://mule-ch2-cicd-0ks4d8.5sc6y6-1.usa-e2.cloudhub.io/ --scheme http --port 8081 --path / --apiInstanceLabel proxyFromCLI55 mule-ch2-specforproxy 1.0.0
+    - name: Try create api gateway - cloudhub proxy app - step4
+      run: exit
 
     # pull the new gateway id, can't be done with anypoint cli until working out environments without interactive mode
     # proxyFromCLI55 is the api instance label
