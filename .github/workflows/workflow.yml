@@ -58,15 +58,7 @@ jobs:
         anypoint-cli-v4 --version
 
     # try install older maven version
-    # wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
-    # tar -xvf apache-maven-3.8.6-bin.tar.gz
-    # mv apache-maven-3.8.6 /opt/
-    # echo "
-    #   M2_HOME='/opt/apache-maven-3.6.3'
-    #   PATH="$M2_HOME/bin:$PATH"
-    #   export PATH" >> ~/.profile
-    # source .profile
-    - name: Set up Maven
+    - name: Install Maven v3.8.6
       uses: stCarolas/setup-maven@v4.5
       with:
         maven-version: 3.8.6
